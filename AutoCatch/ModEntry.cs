@@ -11,6 +11,7 @@ internal sealed class ModEntry : Mod
     private IGenericModConfigMenuApi? configMenu;
     private ModConfig? config;
     private Farmer? player;
+    private bool isHit = false;
 
     public override void Entry(IModHelper helper)
     {
@@ -18,8 +19,8 @@ internal sealed class ModEntry : Mod
         config = helper.ReadConfig<ModConfig>();
         helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
         helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
-        helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
         helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+        helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
     }
 
     private void GameLoop_GameLaunched(object? sender, GameLaunchedEventArgs e)
@@ -67,12 +68,17 @@ internal sealed class ModEntry : Mod
         }
     }
 
-    private void GameLoop_OneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
+    private void GameLoop_UpdateTicked(object? sender, UpdateTickedEventArgs e)
     {
         if (helper == null || config == null || player == null) return;
         if (!config.EnableMod) return;
-        if (Game1.player.CurrentTool is not FishingRod rod) return;
-        if (rod.isFishing && rod.isNibbling && !rod.isReeling && !rod.pullingOutOfWater && !rod.hit) Farmer.useTool(player);
+        if (player.CurrentTool is not FishingRod rod) return;
+        if (rod.isFishing && rod.isNibbling && !rod.isReeling && !rod.pullingOutOfWater && !rod.hit && !isHit)
+        {
+            Farmer.useTool(player);
+            isHit = true;
+        }
+        if (!rod.isFishing && isHit) isHit = false;
     }
 
     private async Task AssignPlayerAsync()

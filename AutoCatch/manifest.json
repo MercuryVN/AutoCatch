@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Auto Catch",
   "Author": "MercuryVN",
-  "Version": "0.1",
+  "Version": "0.2.0",
   "Description": "Auto catch when fish (or something) bite. Why would you want not to catch it?",
   "UniqueID": "MercuryVN.AutoCatch",
   "EntryDll": "AutoCatch.dll",
