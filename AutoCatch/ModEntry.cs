@@ -11,7 +11,6 @@ internal sealed class ModEntry : Mod
     private IGenericModConfigMenuApi? configMenu;
     private ModConfig? config;
     private Farmer? player;
-    private bool isHit = false;
 
     public override void Entry(IModHelper helper)
     {
@@ -73,12 +72,7 @@ internal sealed class ModEntry : Mod
         if (helper == null || config == null || player == null) return;
         if (!config.EnableMod) return;
         if (player.CurrentTool is not FishingRod rod) return;
-        if (rod.isFishing && rod.isNibbling && !rod.isReeling && !rod.pullingOutOfWater && !rod.hit && !isHit)
-        {
-            Farmer.useTool(player);
-            isHit = true;
-        }
-        if (!rod.isFishing && isHit) isHit = false;
+        if (rod.isFishing && rod.isNibbling && !rod.isReeling && !rod.pullingOutOfWater && !rod.hit) Farmer.useTool(player);
     }
 
     private async Task AssignPlayerAsync()

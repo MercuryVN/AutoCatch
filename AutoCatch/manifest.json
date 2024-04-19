@@ -6,5 +6,5 @@
   "UniqueID": "MercuryVN.AutoCatch",
   "EntryDll": "AutoCatch.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ 22616 ]
+  "UpdateKeys": [ "nexus:22616" ]
 }
